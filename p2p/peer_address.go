@@ -1,8 +1,8 @@
 package p2p
 
 import (
-	"github.com/libp2p/go-libp2p-core/peer"
 	"github.com/libp2p/go-libp2p-peerstore/addr"
+	"github.com/libp2p/go-libp2p/core/peer"
 )
 
 func (c *Communication) ExportPeerAddress() map[peer.ID]addr.AddrList {

@@ -12,8 +12,8 @@ import (
 	"sync"
 
 	"github.com/binance-chain/tss-lib/ecdsa/keygen"
-	"github.com/libp2p/go-libp2p-core/peer"
 	"github.com/libp2p/go-libp2p-peerstore/addr"
+	"github.com/libp2p/go-libp2p/core/peer"
 	ma "github.com/multiformats/go-multiaddr"
 
 	"github.com/joltify-finance/tss/conversion"

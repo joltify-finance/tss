@@ -7,14 +7,14 @@ import (
 	"github.com/blang/semver"
 	"github.com/cosmos/cosmos-sdk/types/bech32/legacybech32"
 	atypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
-	"github.com/libp2p/go-libp2p-core/peer"
+	"github.com/libp2p/go-libp2p/core/peer"
 	"github.com/tendermint/tendermint/crypto/secp256k1"
 )
 
 // GetRandomPubKey for test
 func GetRandomPubKey() string {
 	_, pubKey, _ := atypes.KeyTestPubAddr()
-	bech32PubKey,_:=legacybech32.MarshalPubKey(legacybech32.AccPK,pubKey)
+	bech32PubKey, _ := legacybech32.MarshalPubKey(legacybech32.AccPK, pubKey)
 	return bech32PubKey
 }
 

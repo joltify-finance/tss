@@ -23,7 +23,7 @@ import (
 
 	"github.com/joltify-finance/tss/conversion"
 
-	"github.com/libp2p/go-libp2p-core/peer"
+	"github.com/libp2p/go-libp2p/core/peer"
 	maddr "github.com/multiformats/go-multiaddr"
 	tcrypto "github.com/tendermint/tendermint/crypto"
 	. "gopkg.in/check.v1"

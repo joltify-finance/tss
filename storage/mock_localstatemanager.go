@@ -1,8 +1,8 @@
 package storage
 
 import (
-	"github.com/libp2p/go-libp2p-core/peer"
 	"github.com/libp2p/go-libp2p-peerstore/addr"
+	"github.com/libp2p/go-libp2p/core/peer"
 )
 
 // MockLocalStateManager is a mock use for test purpose
