@@ -20,10 +20,10 @@ import (
 	maddr "github.com/multiformats/go-multiaddr"
 	. "gopkg.in/check.v1"
 
-	"github.com/oppyfinance/tss/common"
-	"github.com/oppyfinance/tss/conversion"
-	"github.com/oppyfinance/tss/keygen"
-	"github.com/oppyfinance/tss/keysign"
+	"github.com/joltify-finance/tss/common"
+	"github.com/joltify-finance/tss/conversion"
+	"github.com/joltify-finance/tss/keygen"
+	"github.com/joltify-finance/tss/keysign"
 )
 
 const (

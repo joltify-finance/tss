@@ -8,7 +8,7 @@ import (
 	maddr "github.com/multiformats/go-multiaddr"
 	. "gopkg.in/check.v1"
 
-	"github.com/oppyfinance/tss/messages"
+	"github.com/joltify-finance/tss/messages"
 )
 
 type CommunicationTestSuite struct{}

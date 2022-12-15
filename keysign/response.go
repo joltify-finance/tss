@@ -1,8 +1,8 @@
 package keysign
 
 import (
-	"github.com/oppyfinance/tss/blame"
-	"github.com/oppyfinance/tss/common"
+	"github.com/joltify-finance/tss/blame"
+	"github.com/joltify-finance/tss/common"
 )
 
 // signature

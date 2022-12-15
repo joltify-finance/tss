@@ -8,8 +8,8 @@ import (
 	mapset "github.com/deckarep/golang-set"
 	"github.com/libp2p/go-libp2p-core/peer"
 
-	"github.com/oppyfinance/tss/conversion"
-	"github.com/oppyfinance/tss/messages"
+	"github.com/joltify-finance/tss/conversion"
+	"github.com/joltify-finance/tss/messages"
 )
 
 func (m *Manager) tssTimeoutBlame(lastMessageType string, partyIDMap map[string]*btss.PartyID) ([]string, error) {

@@ -16,7 +16,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/oppyfinance/tss/messages"
+	"github.com/joltify-finance/tss/messages"
 )
 
 var (

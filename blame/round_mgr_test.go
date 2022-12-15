@@ -3,7 +3,7 @@ package blame
 import (
 	. "gopkg.in/check.v1"
 
-	"github.com/oppyfinance/tss/messages"
+	"github.com/joltify-finance/tss/messages"
 )
 
 type RoundMgrSuite struct{}

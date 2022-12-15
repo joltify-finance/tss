@@ -21,7 +21,7 @@ import (
 	crypto2 "github.com/libp2p/go-libp2p-core/crypto"
 	"github.com/libp2p/go-libp2p-core/peer"
 
-	"github.com/oppyfinance/tss/messages"
+	"github.com/joltify-finance/tss/messages"
 )
 
 // GetPeerIDFromSecp256PubKey convert the given pubkey into a peer.ID

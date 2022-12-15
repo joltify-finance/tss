@@ -15,8 +15,8 @@ import (
 	mocknet "github.com/libp2p/go-libp2p/p2p/net/mock"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/oppyfinance/tss/common"
-	"github.com/oppyfinance/tss/p2p"
+	"github.com/joltify-finance/tss/common"
+	"github.com/joltify-finance/tss/p2p"
 )
 
 func TestSignatureNotifierHappyPath(t *testing.T) {

@@ -3,7 +3,7 @@ package common
 import (
 	"sync"
 
-	"github.com/oppyfinance/tss/messages"
+	"github.com/joltify-finance/tss/messages"
 )
 
 // LocalCacheItem used to cache the unconfirmed broadcast message

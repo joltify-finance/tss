@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"github.com/oppyfinance/tss/conversion"
+	"github.com/joltify-finance/tss/conversion"
 	"os"
 	"path/filepath"
 	"reflect"

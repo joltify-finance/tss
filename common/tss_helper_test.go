@@ -13,9 +13,9 @@ import (
 	"github.com/tendermint/tendermint/crypto/secp256k1"
 	. "gopkg.in/check.v1"
 
-	"github.com/oppyfinance/tss/blame"
-	"github.com/oppyfinance/tss/conversion"
-	"github.com/oppyfinance/tss/messages"
+	"github.com/joltify-finance/tss/blame"
+	"github.com/joltify-finance/tss/conversion"
+	"github.com/joltify-finance/tss/messages"
 )
 
 type tssHelpSuite struct{}

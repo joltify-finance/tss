@@ -18,14 +18,14 @@ import (
 	"github.com/rs/zerolog/log"
 	tcrypto "github.com/tendermint/tendermint/crypto"
 
-	"github.com/oppyfinance/tss/common"
-	"github.com/oppyfinance/tss/conversion"
-	"github.com/oppyfinance/tss/keygen"
-	"github.com/oppyfinance/tss/keysign"
-	"github.com/oppyfinance/tss/messages"
-	"github.com/oppyfinance/tss/monitor"
-	"github.com/oppyfinance/tss/p2p"
-	"github.com/oppyfinance/tss/storage"
+	"github.com/joltify-finance/tss/common"
+	"github.com/joltify-finance/tss/conversion"
+	"github.com/joltify-finance/tss/keygen"
+	"github.com/joltify-finance/tss/keysign"
+	"github.com/joltify-finance/tss/messages"
+	"github.com/joltify-finance/tss/monitor"
+	"github.com/joltify-finance/tss/p2p"
+	"github.com/joltify-finance/tss/storage"
 )
 
 // TssServer is the structure that can provide all keysign and key gen features

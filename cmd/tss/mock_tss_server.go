@@ -3,11 +3,11 @@ package main
 import (
 	"errors"
 
-	"github.com/oppyfinance/tss/blame"
-	"github.com/oppyfinance/tss/common"
-	"github.com/oppyfinance/tss/conversion"
-	"github.com/oppyfinance/tss/keygen"
-	"github.com/oppyfinance/tss/keysign"
+	"github.com/joltify-finance/tss/blame"
+	"github.com/joltify-finance/tss/common"
+	"github.com/joltify-finance/tss/conversion"
+	"github.com/joltify-finance/tss/keygen"
+	"github.com/joltify-finance/tss/keysign"
 )
 
 type MockTssServer struct {

@@ -12,13 +12,13 @@ import (
 	tsslibcommon "github.com/binance-chain/tss-lib/common"
 	"github.com/libp2p/go-libp2p-core/peer"
 
-	"github.com/oppyfinance/tss/blame"
-	"github.com/oppyfinance/tss/common"
-	"github.com/oppyfinance/tss/conversion"
-	"github.com/oppyfinance/tss/keysign"
-	"github.com/oppyfinance/tss/messages"
-	"github.com/oppyfinance/tss/p2p"
-	"github.com/oppyfinance/tss/storage"
+	"github.com/joltify-finance/tss/blame"
+	"github.com/joltify-finance/tss/common"
+	"github.com/joltify-finance/tss/conversion"
+	"github.com/joltify-finance/tss/keysign"
+	"github.com/joltify-finance/tss/messages"
+	"github.com/joltify-finance/tss/p2p"
+	"github.com/joltify-finance/tss/storage"
 )
 
 func (t *TssServer) waitForSignatures(msgID, poolPubKey string, msgsToSign [][]byte, sigChan chan string) (keysign.Response, error) {
