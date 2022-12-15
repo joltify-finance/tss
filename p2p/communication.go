@@ -5,19 +5,20 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	dutil "github.com/libp2p/go-libp2p/p2p/discovery/util"
+	rcmgr "github.com/libp2p/go-libp2p/p2p/host/resource-manager"
 	"sync"
 	"sync/atomic"
 	"time"
 
 	"github.com/libp2p/go-libp2p"
-	"github.com/libp2p/go-libp2p-core/crypto"
-	"github.com/libp2p/go-libp2p-core/host"
-	"github.com/libp2p/go-libp2p-core/network"
-	"github.com/libp2p/go-libp2p-core/peer"
-	"github.com/libp2p/go-libp2p-core/protocol"
-	discovery "github.com/libp2p/go-libp2p-discovery"
 	dht "github.com/libp2p/go-libp2p-kad-dht"
-	rcmgr "github.com/libp2p/go-libp2p-resource-manager"
+	"github.com/libp2p/go-libp2p/core/crypto"
+	"github.com/libp2p/go-libp2p/core/host"
+	"github.com/libp2p/go-libp2p/core/network"
+	"github.com/libp2p/go-libp2p/core/peer"
+	"github.com/libp2p/go-libp2p/core/protocol"
+	drouting "github.com/libp2p/go-libp2p/p2p/discovery/routing"
 	"github.com/libp2p/go-libp2p/p2p/protocol/ping"
 	maddr "github.com/multiformats/go-multiaddr"
 	"github.com/rs/zerolog"
@@ -265,17 +266,21 @@ func (c *Communication) startChannel(privKeyBytes []byte) error {
 		}
 		return addrs
 	}
+	// old version
+	//limiter := rcmgr.NewDefaultFixedLimiter(1024 * 1024 * 1024 * 2) //2G limitation
+	//limiterSys := limiter.SystemLimits.WithStreamLimit(1024, 1024, 2048)
+	//limiterStream := limiter.StreamLimits.WithStreamLimit(1024, 1024, 2048)
+	//
+	//limiterStream = limiterStream.WithMemoryLimit(1, 1024*1024*1024, 1024*1024*1024)                 //1Glimitation
+	//limiterTransistent := limiter.TransientLimits.WithMemoryLimit(1, 1024*1024*1024, 1024*1024*1024) //1Glimitation
+	//limiter.StreamLimits = limiterStream
+	//limiter.TransientLimits = limiterTransistent
+	//limiter.SystemLimits = limiterSys
 
-	limiter := rcmgr.NewDefaultFixedLimiter(1024 * 1024 * 1024 * 2) //2G limitation
-	limiterSys := limiter.SystemLimits.WithStreamLimit(1024, 1024, 2048)
-	limiterStream := limiter.StreamLimits.WithStreamLimit(1024, 1024, 2048)
+	limits := rcmgr.DefaultLimits
+	libp2p.SetDefaultServiceLimits(&limits)
 
-	limiterStream = limiterStream.WithMemoryLimit(1, 1024*1024*1024, 1024*1024*1024)                 //1Glimitation
-	limiterTransistent := limiter.TransientLimits.WithMemoryLimit(1, 1024*1024*1024, 1024*1024*1024) //1Glimitation
-	limiter.StreamLimits = limiterStream
-	limiter.TransientLimits = limiterTransistent
-	limiter.SystemLimits = limiterSys
-	rcm, err := rcmgr.NewResourceManager(limiter)
+	mgr, err := rcmgr.NewResourceManager(rcmgr.NewFixedLimiter(limits.AutoScale()))
 	if err != nil {
 		panic("should never fail")
 	}
@@ -323,7 +328,7 @@ func (c *Communication) startChannel(privKeyBytes []byte) error {
 		libp2p.ListenAddrs([]maddr.Multiaddr{c.listenAddr}...),
 		libp2p.Identity(p2pPriKey),
 		libp2p.AddrsFactory(addressFactory),
-		libp2p.ResourceManager(rcm),
+		libp2p.ResourceManager(mgr),
 	)
 	if err != nil {
 		return fmt.Errorf("fail to create p2p host: %w", err)
@@ -359,8 +364,8 @@ func (c *Communication) startChannel(privKeyBytes []byte) error {
 
 	// We use a rendezvous point "meet me here" to announce our location.
 	// This is like telling your friends to meet you at the Eiffel Tower.
-	routingDiscovery := discovery.NewRoutingDiscovery(kademliaDHT)
-	discovery.Advertise(ctx, routingDiscovery, c.rendezvous)
+	routingDiscovery := drouting.NewRoutingDiscovery(kademliaDHT)
+	dutil.Advertise(ctx, routingDiscovery, c.rendezvous)
 	err = c.bootStrapConnectivityCheck()
 	if err != nil {
 		return err

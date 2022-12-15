@@ -4,8 +4,8 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/libp2p/go-libp2p-core/network"
-	"github.com/libp2p/go-libp2p-core/peer"
+	"github.com/libp2p/go-libp2p/core/network"
+	"github.com/libp2p/go-libp2p/core/peer"
 
 	"github.com/joltify-finance/tss/messages"
 )

@@ -1,4 +1,4 @@
-# THORCHain TSS
+# Joltify TSS
 
 ****
 

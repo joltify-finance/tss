@@ -10,7 +10,7 @@ import (
 	"time"
 
 	tsslibcommon "github.com/binance-chain/tss-lib/common"
-	"github.com/libp2p/go-libp2p-core/peer"
+	"github.com/libp2p/go-libp2p/core/peer"
 
 	"github.com/joltify-finance/tss/blame"
 	"github.com/joltify-finance/tss/common"
