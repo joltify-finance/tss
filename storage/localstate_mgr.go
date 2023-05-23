@@ -12,7 +12,6 @@ import (
 	"sync"
 
 	"github.com/binance-chain/tss-lib/ecdsa/keygen"
-	"github.com/libp2p/go-libp2p-peerstore/addr"
 	"github.com/libp2p/go-libp2p/core/peer"
 	ma "github.com/multiformats/go-multiaddr"
 
@@ -32,8 +31,8 @@ type KeygenLocalState struct {
 type LocalStateManager interface {
 	SaveLocalState(state KeygenLocalState) error
 	GetLocalState(pubKey string) (KeygenLocalState, error)
-	SaveAddressBook(addressBook map[peer.ID]addr.AddrList) error
-	RetrieveP2PAddresses() (addr.AddrList, error)
+	SaveAddressBook(addressBook map[peer.ID][]ma.Multiaddr) error
+	RetrieveP2PAddresses() ([]ma.Multiaddr, error)
 }
 
 // FileStateMgr save the local state to file
@@ -111,7 +110,7 @@ func (fsm *FileStateMgr) GetLocalState(pubKey string) (KeygenLocalState, error) 
 	return localState, nil
 }
 
-func (fsm *FileStateMgr) SaveAddressBook(address map[peer.ID]addr.AddrList) error {
+func (fsm *FileStateMgr) SaveAddressBook(address map[peer.ID][]ma.Multiaddr) error {
 	if len(fsm.folder) < 1 {
 		return errors.New("base file path is invalid")
 	}
@@ -136,7 +135,7 @@ func (fsm *FileStateMgr) SaveAddressBook(address map[peer.ID]addr.AddrList) erro
 	return ioutil.WriteFile(filePathName, buf.Bytes(), 0o655)
 }
 
-func (fsm *FileStateMgr) RetrieveP2PAddresses() (addr.AddrList, error) {
+func (fsm *FileStateMgr) RetrieveP2PAddresses() ([]ma.Multiaddr, error) {
 	if len(fsm.folder) < 1 {
 		return nil, errors.New("base file path is invalid")
 	}
