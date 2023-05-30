@@ -8,12 +8,11 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/cosmos/cosmos-sdk/types/bech32/legacybech32"
-
 	bkeygen "github.com/binance-chain/tss-lib/ecdsa/keygen"
 	coskey "github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
-	"github.com/libp2p/go-libp2p-peerstore/addr"
+	"github.com/cosmos/cosmos-sdk/types/bech32/legacybech32"
 	"github.com/libp2p/go-libp2p/core/peer"
+	ma "github.com/multiformats/go-multiaddr"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	tcrypto "github.com/tendermint/tendermint/crypto"
@@ -46,7 +45,7 @@ type TssServer struct {
 
 // NewTss create a new instance of Tss
 func NewTss(
-	cmdBootstrapPeers addr.AddrList,
+	cmdBootstrapPeers []ma.Multiaddr,
 	p2pPort int,
 	priKey tcrypto.PrivKey,
 	rendezvous,
@@ -69,7 +68,7 @@ func NewTss(
 		return nil, fmt.Errorf("fail to create file state manager")
 	}
 
-	var bootstrapPeers addr.AddrList
+	var bootstrapPeers []ma.Multiaddr
 	savedPeers, err := stateManager.RetrieveP2PAddresses()
 	if err != nil {
 		bootstrapPeers = cmdBootstrapPeers

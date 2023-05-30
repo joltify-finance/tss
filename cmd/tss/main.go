@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/tendermint/tendermint/crypto/ed25519"
 	"log"
 	"os"
 	"os/signal"
@@ -14,7 +13,7 @@ import (
 	"time"
 
 	golog "github.com/ipfs/go-log"
-	"github.com/libp2p/go-libp2p-peerstore/addr"
+	"github.com/tendermint/tendermint/crypto/ed25519"
 	"gitlab.com/thorchain/binance-sdk/common/types"
 
 	"github.com/joltify-finance/tss/common"
@@ -86,7 +85,7 @@ func main() {
 
 	// init tss module
 	tss, err := tss.NewTss(
-		addr.AddrList(p2pConf.BootstrapPeers),
+		p2pConf.BootstrapPeers,
 		p2pConf.Port,
 		privKey,
 		p2pConf.RendezvousString,

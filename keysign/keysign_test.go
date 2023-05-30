@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/tendermint/tendermint/crypto/ed25519"
 	"io/ioutil"
 	"os"
 	"path"
@@ -15,16 +14,17 @@ import (
 	"testing"
 	"time"
 
+	"github.com/tendermint/tendermint/crypto/ed25519"
+
 	tsslibcommon "github.com/binance-chain/tss-lib/common"
 	btss "github.com/binance-chain/tss-lib/tss"
 	"github.com/ipfs/go-log"
-	"github.com/libp2p/go-libp2p-peerstore/addr"
 	zlog "github.com/rs/zerolog/log"
 
 	"github.com/joltify-finance/tss/conversion"
 
 	"github.com/libp2p/go-libp2p/core/peer"
-	maddr "github.com/multiformats/go-multiaddr"
+	ma "github.com/multiformats/go-multiaddr"
 	tcrypto "github.com/tendermint/tendermint/crypto"
 	. "gopkg.in/check.v1"
 
@@ -86,11 +86,11 @@ func (m *MockLocalStateManager) GetLocalState(pubKey string) (storage.KeygenLoca
 	return state, nil
 }
 
-func (s *MockLocalStateManager) SaveAddressBook(address map[peer.ID]addr.AddrList) error {
+func (s *MockLocalStateManager) SaveAddressBook(address map[peer.ID][]ma.Multiaddr) error {
 	return nil
 }
 
-func (s *MockLocalStateManager) RetrieveP2PAddresses() (addr.AddrList, error) {
+func (s *MockLocalStateManager) RetrieveP2PAddresses() ([]ma.Multiaddr, error) {
 	return nil, os.ErrNotExist
 }
 
@@ -137,7 +137,7 @@ func (s *TssKeysignTestSuite) SetUpTest(c *C) {
 	s.comms = make([]*p2p.Communication, s.partyNum)
 	s.stateMgrs = make([]storage.LocalStateManager, s.partyNum)
 	bootstrapPeer := "/ip4/127.0.0.1/tcp/17666/p2p/12D3KooWJ9ne4fSbjE4bZdsikkmxZYurdDDr74Lx4Ghm73ZqSKwZ"
-	multiAddr, err := maddr.NewMultiaddr(bootstrapPeer)
+	multiAddr, err := ma.NewMultiaddr(bootstrapPeer)
 	c.Assert(err, IsNil)
 	for i := 0; i < s.partyNum; i++ {
 		buf, err := base64.StdEncoding.DecodeString(testPriKeyArr[i])
@@ -149,7 +149,7 @@ func (s *TssKeysignTestSuite) SetUpTest(c *C) {
 			s.comms[i] = comm
 			continue
 		}
-		comm, err := p2p.NewCommunication("asgard", []maddr.Multiaddr{multiAddr}, ports[i], "")
+		comm, err := p2p.NewCommunication("asgard", []ma.Multiaddr{multiAddr}, ports[i], "")
 		c.Assert(err, IsNil)
 		c.Assert(comm.Start(buf), IsNil)
 		s.comms[i] = comm

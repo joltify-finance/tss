@@ -1,18 +1,18 @@
 package storage
 
 import (
-	"github.com/joltify-finance/tss/conversion"
 	"os"
 	"path/filepath"
 	"reflect"
 	"testing"
 
 	"github.com/binance-chain/tss-lib/ecdsa/keygen"
-	"github.com/libp2p/go-libp2p-peerstore/addr"
 	tnet "github.com/libp2p/go-libp2p-testing/net"
 	"github.com/libp2p/go-libp2p/core/peer"
-	maddr "github.com/multiformats/go-multiaddr"
+	ma "github.com/multiformats/go-multiaddr"
 	. "gopkg.in/check.v1"
+
+	"github.com/joltify-finance/tss/conversion"
 )
 
 type FileStateMgrTestSuite struct{}
@@ -74,16 +74,16 @@ func (s *FileStateMgrTestSuite) TestSaveLocalState(c *C) {
 }
 
 func (s *FileStateMgrTestSuite) TestSaveAddressBook(c *C) {
-	testAddresses := make(map[peer.ID]addr.AddrList)
+	testAddresses := make(map[peer.ID][]ma.Multiaddr)
 	var t *testing.T
 	id1 := tnet.RandIdentityOrFatal(t)
 	id2 := tnet.RandIdentityOrFatal(t)
 	id3 := tnet.RandIdentityOrFatal(t)
-	mockAddr, err := maddr.NewMultiaddr("/ip4/192.168.3.5/tcp/6668")
+	mockAddr, err := ma.NewMultiaddr("/ip4/192.168.3.5/tcp/6668")
 	c.Assert(err, IsNil)
 	peers := []peer.ID{id1.ID(), id2.ID(), id3.ID()}
 	for _, each := range peers {
-		testAddresses[each] = []maddr.Multiaddr{mockAddr}
+		testAddresses[each] = []ma.Multiaddr{mockAddr}
 	}
 	folder := os.TempDir()
 	f := filepath.Join(folder, "test")

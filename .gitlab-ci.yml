@@ -1,4 +1,4 @@
-image: golang:1.15
+image: golang:1.20
 
 cache:
   paths:
