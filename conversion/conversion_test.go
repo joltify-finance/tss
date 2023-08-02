@@ -2,14 +2,14 @@ package conversion
 
 import (
 	"encoding/json"
-	"github.com/cosmos/cosmos-sdk/types/bech32/legacybech32"
 	"math/big"
 	"sort"
 	"testing"
 
 	"github.com/binance-chain/tss-lib/crypto"
-	"github.com/btcsuite/btcd/btcec"
+	"github.com/btcsuite/btcd/btcec/v2"
 	coskey "github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
+	"github.com/cosmos/cosmos-sdk/types/bech32/legacybech32"
 	"github.com/libp2p/go-libp2p/core/peer"
 	. "gopkg.in/check.v1"
 )
@@ -90,7 +90,6 @@ func (p *ConversionTestSuite) TestGetParties(c *C) {
 	c.Assert(err, NotNil)
 }
 
-//
 func (p *ConversionTestSuite) TestGetPeerIDFromPartyID(c *C) {
 	_, localParty, err := GetParties(p.testPubKeys, p.testPubKeys[0])
 	c.Assert(err, IsNil)
@@ -204,15 +203,16 @@ func (p *ConversionTestSuite) TestSetupPartyIDMap(c *C) {
 }
 
 func (p *ConversionTestSuite) TestTssPubKey(c *C) {
-	sk, err := btcec.NewPrivateKey(btcec.S256())
+	sk, err := btcec.NewPrivateKey()
 	c.Assert(err, IsNil)
-	point, err := crypto.NewECPoint(btcec.S256(), sk.X, sk.Y)
+	x, y := sk.ToECDSA().X, sk.ToECDSA().Y
+	point, err := crypto.NewECPoint(btcec.S256(), x, y)
 	c.Assert(err, IsNil)
 	_, _, err = GetTssPubKey(point)
 	c.Assert(err, IsNil)
 
 	// create an invalid point
-	invalidPoint := crypto.NewECPointNoCurveCheck(btcec.S256(), sk.X, new(big.Int).Add(sk.Y, big.NewInt(1)))
+	invalidPoint := crypto.NewECPointNoCurveCheck(btcec.S256(), x, new(big.Int).Add(y, big.NewInt(1)))
 	_, _, err = GetTssPubKey(invalidPoint)
 	c.Assert(err, NotNil)
 

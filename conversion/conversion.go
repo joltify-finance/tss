@@ -13,7 +13,7 @@ import (
 
 	"github.com/binance-chain/tss-lib/crypto"
 	btss "github.com/binance-chain/tss-lib/tss"
-	"github.com/btcsuite/btcd/btcec"
+	"github.com/btcsuite/btcd/btcec/v2"
 	coskey "github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	cossecp256 "github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -165,11 +165,10 @@ func GetTssPubKey(pubKeyPoint *crypto.ECPoint) (string, sdk.AccAddress, error) {
 	if pubKeyPoint == nil || !isOnCurve(pubKeyPoint.X(), pubKeyPoint.Y()) {
 		return "", sdk.AccAddress{}, errors.New("invalid points")
 	}
-	tssPubKey := btcec.PublicKey{
-		Curve: btcec.S256(),
-		X:     pubKeyPoint.X(),
-		Y:     pubKeyPoint.Y(),
-	}
+	x, y := new(btcec.FieldVal), new(btcec.FieldVal)
+	x.SetByteSlice(pubKeyPoint.X().Bytes())
+	y.SetByteSlice(pubKeyPoint.Y().Bytes())
+	tssPubKey := btcec.NewPublicKey(x, y)
 
 	compressedPubkey := cossecp256.PubKey{
 		Key: tssPubKey.SerializeCompressed(),

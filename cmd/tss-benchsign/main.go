@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"math/big"
 	"os"
 	"runtime"
@@ -17,7 +16,8 @@ import (
 	"github.com/binance-chain/tss-lib/ecdsa/signing"
 	"github.com/binance-chain/tss-lib/test"
 	"github.com/binance-chain/tss-lib/tss"
-	"github.com/btcsuite/btcd/btcec"
+	"github.com/btcsuite/btcd/btcec/v2"
+	becdsa "github.com/btcsuite/btcd/btcec/v2/ecdsa"
 	"github.com/ipfs/go-log"
 	"github.com/olekukonko/tablewriter"
 	"github.com/pkg/errors"
@@ -170,23 +170,25 @@ outer:
 			if atomic.LoadInt32(&ended) == int32(len(signPIDs)) {
 				// BEGIN ECDSA verify
 				pkX, pkY := keys[0].ECDSAPub.X(), keys[0].ECDSAPub.Y()
-				pk := ecdsa.PublicKey{
-					Curve: tss.EC(),
-					X:     pkX,
-					Y:     pkY,
-				}
+				x, y := new(btcec.FieldVal), new(btcec.FieldVal)
+				x.SetByteSlice(pkX.Bytes())
+				y.SetByteSlice(pkY.Bytes())
+				pk := btcec.NewPublicKey(x, y)
 				r := new(big.Int).SetBytes(data.Signature.GetR())
 				s := new(big.Int).SetBytes(data.Signature.GetS())
 				var ok bool
 				if ok = ecdsa.Verify(
-					&pk,
+					pk.ToECDSA(),
 					msg.Bytes(),
 					r, s,
 				); !ok {
 					panic("ECDSA signature verification did not pass")
 				}
-				btcecSig := &btcec.Signature{R: r, S: s}
-				if ok = btcecSig.Verify(msg.Bytes(), (*btcec.PublicKey)(&pk)); !ok {
+				br, bs := new(btcec.ModNScalar), new(btcec.ModNScalar)
+				br.SetByteSlice(r.Bytes())
+				bs.SetByteSlice(s.Bytes())
+				btcecSig := becdsa.NewSignature(br, bs)
+				if ok = btcecSig.Verify(msg.Bytes(), pk); !ok {
 					panic("ECDSA signature verification 2 did not pass")
 				}
 				break outer
@@ -238,7 +240,7 @@ func loadKeyGenData(dir string, qty int, optionalStart ...int) ([]keygen.LocalPa
 	}
 	for i := start; i < qty; i++ {
 		fixtureFilePath := makeKeyGenDataFilePath(dir, i)
-		bz, err := ioutil.ReadFile(fixtureFilePath)
+		bz, err := os.ReadFile(fixtureFilePath)
 		if err != nil {
 			return nil, nil, errors.Wrapf(err,
 				"could not open the test fixture for party %d in the expected location: %s. run keygen tests first.",
